@@ -11,13 +11,24 @@ function isNumber(value) {
   return !isNaN(value) && value.trim() !== "";
 }
 
+function showManual() {
+  object = document.querySelector(".manual");
+  if (object.classList.contains("active")) {
+    object.classList.remove("active");
+  } else {
+    object.classList.add("active");
+  }
+}
+
 function QuestionGet() {
+  let ik = 0;
   fetch("data/Questions.json")
     .then((response) => {
       if (!response.ok) throw new Error("File not found");
-      return response.json(); // use .text() for plain text files
+      return response.json();
     })
     .then((data) => {
+      ik = 1;
       const keys = Object.keys(data);
       const lastKey = keys[keys.length - 1];
       const lastQuestion = data[lastKey];
@@ -29,6 +40,29 @@ function QuestionGet() {
     })
     .catch((error) => {
       console.error("Error loading file:", error);
+    })
+    .finally(() => {
+      if (ik == 0) {
+        while (true) {
+          tempmax = prompt("Enter the row number:");
+          if (isNumber(tempmax)) {
+            tempmax = Number(tempmax);
+            if (tempmax <= 3) {
+              alert("There is no solution for number under 3");
+              continue;
+            }
+            if (tempmax > 10) {
+              alert("This will take time so try lower number");
+              continue;
+            }
+            break;
+          } else {
+            alert("Please enter a valid number.");
+          }
+        }
+        max = tempmax;
+        inputInsert();
+      }
     });
 }
 
@@ -70,7 +104,7 @@ function borderValues(i, j) {
       const left = document.getElementById(`${i},${j - 1}`);
       if (!left.classList.contains(TheClass)) {
         cell.classList.add(`border-left`);
-      }else{
+      } else {
         cell.classList.remove(`border-left`);
       }
     }
@@ -78,7 +112,7 @@ function borderValues(i, j) {
       const right = document.getElementById(`${i},${j + 1}`);
       if (!right.classList.contains(TheClass)) {
         cell.classList.add(`border-right`);
-      }else{
+      } else {
         cell.classList.remove(`border-right`);
       }
     }
@@ -87,7 +121,7 @@ function borderValues(i, j) {
       const top = document.getElementById(`${i - 1},${j}`);
       if (!top.classList.contains(TheClass)) {
         cell.classList.add(`border-top`);
-      }else{
+      } else {
         cell.classList.remove(`border-top`);
       }
     }
@@ -95,7 +129,7 @@ function borderValues(i, j) {
       const bottom = document.getElementById(`${i + 1},${j}`);
       if (!bottom.classList.contains(TheClass)) {
         cell.classList.add(`border-bottom`);
-      }else{
+      } else {
         cell.classList.remove(`border-bottom`);
       }
     }
@@ -103,19 +137,19 @@ function borderValues(i, j) {
 }
 
 function fourSizedCheck(i, j) {
-    borderValues(i, j)
-    if(i>0){
-        borderValues(i-1, j);
-    }
-    if(i<max-1){
-        borderValues(i+1, j);
-    }
-    if(j>0){
-        borderValues(i, j-1);
-    }
-    if(j<max-1){
-        borderValues(i, j+1);
-    }
+  borderValues(i, j);
+  if (i > 0) {
+    borderValues(i - 1, j);
+  }
+  if (i < max - 1) {
+    borderValues(i + 1, j);
+  }
+  if (j > 0) {
+    borderValues(i, j - 1);
+  }
+  if (j < max - 1) {
+    borderValues(i, j + 1);
+  }
 }
 
 function inputInsert() {
@@ -127,7 +161,7 @@ function inputInsert() {
       div.id = `${row},${col}`;
       div.classList.add("cell-input");
 
-      div.addEventListener("click", () => AddQueen(row, col));
+      div.addEventListener("click", () => AddColor(row, col));
 
       fragment.appendChild(div);
     }
@@ -163,7 +197,6 @@ function colorBoxControl(element) {
     newColor.classList.add("color-active");
     mainselectedColor = ColorCollection.indexOf(selectedColor);
   }
-  // console.log(styleTag.sheet)
 
   newColor.addEventListener("click", function (element) {
     let colorer = selectedColor;
@@ -208,7 +241,7 @@ function createStyleTag() {
   return style;
 }
 
-function AddQueen(row, col) {
+function AddColor(row, col) {
   let old = -1;
   let object = document.getElementById(row + "," + col);
   for (let i = 0; i < ColorCollection.length; i++) {
@@ -246,7 +279,7 @@ function sleep(ms) {
 }
 async function wonTheGame() {
   for (let i = max - 1; i >= 0; i--) {
-    await sleep(100);
+    await sleep(80);
     for (let j = max - 1; j >= 0; j--) {
       let object = document.getElementById(i + "," + j);
 
@@ -254,7 +287,7 @@ async function wonTheGame() {
     }
   }
   for (let i = max - 1; i >= 0; i--) {
-    await sleep(100);
+    await sleep(80);
     for (let j = max - 1; j >= 0; j--) {
       let object = document.getElementById(i + "," + j);
       object.classList.remove("Observe");
@@ -417,139 +450,3 @@ function placement(row, col, colorindex) {
 
   return true;
 }
-
-// document.querySelectorAll('.cell-input').forEach(cell => {
-//     cell.addEventListener('mouseenter', () => {
-//         let queens=document.querySelectorAll(".Queen");
-//         if(queens.length!=max){
-//             let objectid=cell.id;
-//             objectid=objectid.split(",")
-//             let row=objectid[0];
-//             let col=objectid[1];
-//             for(let i=0;i<max;i++){
-//                 let object=document.getElementById(row+","+i);
-//                 if(!object.classList.contains("Observe")){
-//                     if(object.classList.contains("Queen") && i!=col){
-//                         object.classList.add("Wrong")
-//                     }else{
-//                         object.classList.add("Observe")
-//                     }
-//                 }
-//             }
-//             for(let i=0;i<max;i++){
-//                 let object=document.getElementById(i+","+col);
-//                 if(!object.classList.contains("Observe")){
-//                     if(object.classList.contains("Queen") && i!=row){
-//                         object.classList.add("Wrong")
-//                     }else{
-//                         object.classList.add("Observe")
-//                     }
-//                 }
-//             }
-
-//             for(let i=row,j=col;i>=0&&j>=0;i--,j--){
-//                 let object=document.getElementById(i+","+j);
-//                 if(!object.classList.contains("Observe")){
-//                     if(object.classList.contains("Queen") ){
-//                         object.classList.add("Wrong")
-//                     }else{
-//                         object.classList.add("Observe")
-//                     }
-//                 }
-//             }
-//             for(let i=row,j=col;i<max&&j<max;i++,j++){
-//                 let object=document.getElementById(i+","+j);
-//                 if(!object.classList.contains("Observe")){
-//                     if(object.classList.contains("Queen")){
-//                         object.classList.add("Wrong")
-//                     }else{
-//                         object.classList.add("Observe")
-//                     }
-//                 }
-//             }
-//             for(let i=row,j=col;i<max&&j>=0;i++,j--){
-//                 let object=document.getElementById(i+","+j);
-//                 if(!object.classList.contains("Observe")){
-//                     if(object.classList.contains("Queen")){
-//                         object.classList.add("Wrong")
-//                     }else{
-//                         object.classList.add("Observe")
-//                     }
-//                 }
-//             }
-//             for(let i=row,j=col;i>=0&&j<max;i--,j++){
-//                 let object=document.getElementById(i+","+j);
-//                 if(!object.classList.contains("Observe")){
-//                     if(object.classList.contains("Queen")){
-//                         object.classList.add("Wrong")
-//                     }else{
-//                         object.classList.add("Observe")
-//                     }
-//                 }
-//             }
-//         }
-//     });
-//     cell.addEventListener('mouseleave', () => {
-//         let objectid=cell.id;
-//         objectid=objectid.split(",")
-//         let row=objectid[0];
-//         let col=objectid[1];
-//         for(let i=0;i<max;i++){
-//           let object=document.getElementById(row+","+i);
-//           if(object.classList.contains("Wrong")){
-//             object.classList.remove("Wrong")
-//             }
-//           if(object.classList.contains("Observe")){
-//                 object.classList.remove("Observe")
-//             }
-//         }
-//         for(let i=0;i<max;i++){
-//             let object=document.getElementById(i+","+col);
-//             if(object.classList.contains("Wrong")){
-//                 object.classList.remove("Wrong")
-//             }
-//             if(object.classList.contains("Observe")){
-//                 object.classList.remove("Observe")
-//             }
-//         }
-
-//         for(let i=row,j=col;i>=0&&j>=0;i--,j--){
-//             let object=document.getElementById(i+","+j);
-//             if(object.classList.contains("Wrong")){
-//                 object.classList.remove("Wrong")
-//             }
-//             if(object.classList.contains("Observe")){
-//                 object.classList.remove("Observe")
-//             }
-//           }
-//           for(let i=row,j=col;i<max&&j<max;i++,j++){
-//             let object=document.getElementById(i+","+j);
-//             if(object.classList.contains("Wrong")){
-//                 object.classList.remove("Wrong")
-//             }
-//             if(object.classList.contains("Observe")){
-//                 object.classList.remove("Observe")
-//             }
-//           }
-//           for(let i=row,j=col;i<max&&j>=0;i++,j--){
-//             let object=document.getElementById(i+","+j);
-//             if(object.classList.contains("Wrong")){
-//                 object.classList.remove("Wrong")
-//             }
-//             if(object.classList.contains("Observe")){
-//                 object.classList.remove("Observe")
-//             }
-//           }
-//           for(let i=row,j=col;i>=0&&j<max;i--,j++){
-//             let object=document.getElementById(i+","+j);
-//             if(object.classList.contains("Wrong")){
-//                 object.classList.remove("Wrong")
-//             }
-//             if(object.classList.contains("Observe")){
-//                 object.classList.remove("Observe")
-//             }
-//           }
-
-//       });
-
-//   });
