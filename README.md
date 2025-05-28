@@ -6,7 +6,7 @@ An interactive visualization tool for the **N-Queen Problem**, designed with a u
 
 ## 🔗 Demo Website
 
-🌐 [View Demo](https://mrabhin03.github.io/LinkedIn--N-Queen-Game-Solution)
+🌐 [View Demo](https://mrabhin03.github.io/LinkedIn-NQueen-Game-Solution)
 
 ---
 
@@ -50,7 +50,7 @@ An interactive visualization tool for the **N-Queen Problem**, designed with a u
 To run the project locally:
 
 ```bash
-git clone https://github.com/mrabhin03/LinkedIn--N-Queen-Game-Solution.git
+git clone https://github.com/mrabhin03/LinkedIn-NQueen-Game-Solution.git
 cd LinkedIn--N-Queen-Game-Solution
 ````
 
