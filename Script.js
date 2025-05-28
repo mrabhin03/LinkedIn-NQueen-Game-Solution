@@ -5,6 +5,7 @@ let max = tempmax;
 let ColorCollection = [];
 let mainselectedColor = -1;
 reset = true;
+let colorCount = [];
 
 function isNumber(value) {
   if (value === null) return false;
@@ -295,7 +296,7 @@ async function wonTheGame() {
     }
   }
 }
-let colorCount = [];
+
 async function result() {
   for (let i = 0; i < ColorCollection.length; i++) {
     colorCount[i] = 0;

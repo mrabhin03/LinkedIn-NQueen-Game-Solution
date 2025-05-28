@@ -34,7 +34,7 @@ An interactive visualization tool for the **N-Queen Problem**, designed with a u
 
 ```
 
-/
+|
 ├── index.html              # Main UI structure
 ├── Script.js               # Game logic and interactivity
 ├── styles.css              # (Optional) Custom styles
